@@ -2,6 +2,7 @@ package andreapascarella.u5d10project.services;
 
 import andreapascarella.u5d10project.entities.Employee;
 import andreapascarella.u5d10project.exceptions.BadRequestException;
+import andreapascarella.u5d10project.exceptions.NotFoundException;
 import andreapascarella.u5d10project.payloads.EmployeeDTO;
 import andreapascarella.u5d10project.repositories.EmployeesRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 
 @Service
@@ -29,6 +32,10 @@ public class EmployeesService {
             throw new BadRequestException("L' email " + payload.email() + " é giá in uso!");
         }
 
+        if (this.employeesRepository.existsByUsername(payload.username())) {
+            throw new BadRequestException("L' username " + payload.username() + " é giá in uso!");
+        }
+
         Employee newEmployee = new Employee(payload.username(), payload.name(), payload.surname(), payload.email());
 
         Employee savedEmployee = this.employeesRepository.save(newEmployee);
@@ -44,5 +51,10 @@ public class EmployeesService {
         Pageable pageable = PageRequest.of(page, size,
                 sortCriteria.equals("desc") ? Sort.by(orderBy).descending() : Sort.by(orderBy));
         return this.employeesRepository.findAll(pageable);
+    }
+
+    public Employee findById(UUID employeeId) {
+        return this.employeesRepository.findById(employeeId)
+                .orElseThrow(() -> new NotFoundException(employeeId));
     }
 }

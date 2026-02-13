@@ -2,6 +2,7 @@ package andreapascarella.u5d10project.services;
 
 import andreapascarella.u5d10project.entities.Travel;
 import andreapascarella.u5d10project.exceptions.BadRequestException;
+import andreapascarella.u5d10project.exceptions.NotFoundException;
 import andreapascarella.u5d10project.payloads.TravelDTO;
 import andreapascarella.u5d10project.repositories.TravelsRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -43,5 +46,10 @@ public class TravelsService {
         Pageable pageable = PageRequest.of(page, size,
                 sortCriteria.equals("desc") ? Sort.by(orderBy).descending() : Sort.by(orderBy));
         return this.travelsRepository.findAll(pageable);
+    }
+
+    public Travel findById(UUID travelId) {
+        return this.travelsRepository.findById(travelId)
+                .orElseThrow(() -> new NotFoundException(travelId));
     }
 }

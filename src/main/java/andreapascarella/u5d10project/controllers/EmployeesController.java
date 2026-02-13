@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/employees")
@@ -46,6 +47,11 @@ public class EmployeesController {
                                   @RequestParam(defaultValue = "asc") String sortCriteria) {
 
         return this.employeesService.findAll(page, size, orderBy, sortCriteria);
+    }
+
+    @GetMapping("/{employeeId}")
+    public Employee findById(@PathVariable UUID employeeId) {
+        return this.employeesService.findById(employeeId);
     }
 
 }

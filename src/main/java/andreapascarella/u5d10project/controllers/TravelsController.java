@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/travels")
@@ -42,10 +43,14 @@ public class TravelsController {
     @GetMapping
     public Page<Travel> findAll(@RequestParam(defaultValue = "0") int page,
                                 @RequestParam(defaultValue = "10") int size,
-                                @RequestParam(defaultValue = "surname") String orderBy,
+                                @RequestParam(defaultValue = "travelDate") String orderBy,
                                 @RequestParam(defaultValue = "asc") String sortCriteria) {
 
         return this.travelsService.findAll(page, size, orderBy, sortCriteria);
     }
 
+    @GetMapping("/{travelId}")
+    public Travel findById(@PathVariable UUID travelId) {
+        return this.travelsService.findById(travelId);
+    }
 }

@@ -1,10 +1,7 @@
 package andreapascarella.u5d10project.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -19,6 +16,7 @@ public class Travel {
 
     @Id
     @GeneratedValue
+    @Setter(AccessLevel.NONE)
     private UUID travelId;
 
     @Column(nullable = false)
