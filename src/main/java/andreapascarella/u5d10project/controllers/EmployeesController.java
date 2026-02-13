@@ -56,7 +56,7 @@ public class EmployeesController {
     }
 
     @PatchMapping("/{employeeId}/avatar")
-    public String uploadImage(@RequestParam("profile_picture") MultipartFile file, @PathVariable UUID userId) {
+    public String uploadImage(@RequestParam("profile_picture") MultipartFile file, @PathVariable UUID employeeId) {
 
         return this.employeesService.uploadAvatar(file);
     }
